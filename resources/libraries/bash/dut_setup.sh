@@ -23,20 +23,25 @@ function cmd {
 echo
 echo "[Command_desc] Starting ${0}"
 
-if [ -f "/etc/redhat-release" ]; then
-    cmd 'rpm -qai vpp*'
-else
-    cmd 'dpkg -l vpp\*'
-fi
+#if [ -f "/etc/redhat-release" ]; then
+#    cmd 'rpm -qai vpp*'
+#else
+#    cmd 'dpkg -l vpp\*'
+#fi
 
 cmd 'ps aux | grep vpp'
 
-cmd 'cat /etc/vpp/startup.conf'
+#cmd 'cat /etc/vpp/startup.conf'
 
-cmd 'sudo -S service vpp restart'
+#cmd 'sudo -S service vpp restart'
+
+cmd 'cd ~/trunk/bin;./restartall.sh'
+
 
 echo "[Command_desc] SLEEP for three seconds, so that VPP is up for sure"
-cmd 'sleep 3'
+cmd 'sleep 5'
+
+cmd 'cd ~/trunk/bin;./check.sh'
 
 cmd 'cat /proc/meminfo'
 
@@ -55,7 +60,7 @@ else
 fi
 
 echo "[Command_desc] Adding dpdk-input trace"
-cmd 'sudo vpp_api_test <<< "exec trace add dpdk-input 100"'
+cmd 'sudo ~/trunk/bin/vpp_api_test <<< "exec trace add dpdk-input 100"'
 
 echo "[Command_desc] Adding vhost-user-input trace"
-cmd 'sudo vpp_api_test <<< "exec trace add vhost-user-input 100"'
+cmd 'sudo ~/trunk/bin/vpp_api_test <<< "exec trace add vhost-user-input 100"'

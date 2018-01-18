@@ -127,7 +127,8 @@ class DUTSetup(object):
 
         for i in range(3):
             logger.trace('Try {}: Get VPP PID'.format(i))
-            ret_code, stdout, stderr = ssh.exec_command('pidof vpp')
+            #ret_code, stdout, stderr = ssh.exec_command('pidof vpp')
+            ret_code, stdout, stderr = ssh.exec_command('pidof lt-vpp')
 
             if int(ret_code) != 0:
                 raise RuntimeError('Not possible to get PID of VPP process '

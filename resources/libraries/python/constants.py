@@ -27,7 +27,7 @@ class Constants(object):
     RESOURCES_TPL_VAT = 'resources/templates/vat'
 
     # OpenVPP VAT binary name
-    VAT_BIN_NAME = 'vpp_api_test'
+    VAT_BIN_NAME = '~/trunk/bin/vpp_api_test'
 
     # QEMU version to install
     QEMU_INSTALL_VERSION = 'qemu-2.5.0'

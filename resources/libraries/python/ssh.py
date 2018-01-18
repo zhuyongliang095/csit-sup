@@ -250,12 +250,13 @@ class SSH(object):
         chan.set_combine_stderr(True)
 
         buf = ''
-        while not buf.endswith((":~$ ", "~]$ ")):
+        while not buf.endswith((":~$ ", "~]$ ","~]# ")):
             try:
                 chunk = chan.recv(self.__MAX_RECV_BUF)
                 if not chunk:
                     break
                 buf += chunk
+                logger.debug("interactive_terminal_open - buf : {}".format(buf))
                 if chan.exit_status_ready():
                     logger.error('Channel exit status ready')
                     break
