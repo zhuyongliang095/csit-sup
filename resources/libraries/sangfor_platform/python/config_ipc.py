@@ -107,6 +107,13 @@ class config_ipc_data(object):
     def set_config_member(self,member,value):
         self.data['config'][member]=value
         
+    def set_config_level_structName(self,name):
+        self.data['config']['level']=[{}]
+        self.data['config']['level'][0]['configStructName']=name
+    
+    def set_config_level_member(self,member,value):
+        self.data['config']['level'][0][member]=value
+        
     def get_data(self):
         return self.data
     

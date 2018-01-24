@@ -26,15 +26,29 @@
 | Resource       | resources/libraries/robot/l2/tagging.robot |
 | Resource       | resources/libraries/robot/l2/l2_traffic.robot |
 | Library        | resources.libraries.python.Trace |
-| Library        | resources/libraries/python/sangfor_platform/l2_config.py |
+| Library        | resources.libraries.sangfor_platform.python.l2_config |
+| Resource       | resources/libraries/sangfor_platform/robot/shared/testing_path.robot |
 
 | *** Variables *** |
-| ${vlan_tag}    | 10 |
+| ${vlan_access} | 10 |
+| ${vlan_trunk}  | ["1-10"] |
+| ${vlan_trunk_5} | 5 |
+| ${vlan_trunk_10} | 10 |
 
 | *** Test Cases *** |
-| TC01:TG and DUT1 with Vlan Access translate-10-10 switch ICMPv4 between two TG links |
+| TC01:DUT1 with Vlan Access translate-10-10 switch ICMPv4 between two TG links |
 |    | [Tags] | SUP BVT 3_NODE_SINGLE_LINK_TOPO |
-|    | Given Configure path in 2-node circular topology | ${nodes['TG']} | ${nodes['DUT1']} | ${nodes['TG']} |
-|    | When Sup L2 Config Access | ${nodes['DUT1']} | ${dut_to_tg_if1} | ${vlan_tag} |
-|    | And Sup L2 config Access | ${nodes['DUT1']} | ${dut_to_tg_if2} | ${vlan_tag} |
+|    | Given Sup Configure path in 2-node circular topology | ${nodes['TG']} | ${nodes['DUT1']} | ${nodes['TG']} |
+|    | When Sup L2 Config Access | ${nodes['DUT1']} | ${dut_to_tg_if1_name} | ${vlan_access} |
+|    | And Sup L2 config Access | ${nodes['DUT1']} | ${dut_to_tg_if2_name} | ${vlan_access} |
 |    | Then Send ICMPv4 bidirectionally and verify received packets | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} |
+
+| TC02:DUT1 with Vlan Trunk translate-10-10 switch ICMPv4 between two TG links |
+|    | [Tags] | SUP BVT 3_NODE_SINGLE_LINK_TOPO |
+|    | Given Sup Configure path in 2-node circular topology | ${nodes['TG']} | ${nodes['DUT1']} | ${nodes['TG']} |
+|    | When Sup L2 Config trunk | ${nodes['DUT1']} | ${dut_to_tg_if1_name} | ${vlan_trunk} |
+|    | And Sup L2 config trunk | ${nodes['DUT1']} | ${dut_to_tg_if2_name} | ${vlan_trunk} |
+|    | Then Send ICMP packet and verify received packet | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} 
+|    | ... | encaps=Dot1q | vlan1=${vlan_trunk_5} | encaps_rx=Dot1q |
+|    | Then Send ICMP packet and verify received packet | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} 
+|    | ... | encaps=Dot1q | vlan1=${vlan_trunk_10} | encaps_rx=Dot1q |

@@ -12,5 +12,5 @@
 # limitations under the License.
 
 """
-__init__ file for directory resources/libraries/python/sangfor_platform
+__init__ file for directory resources/libraries/sangfor_platform/python
 """
