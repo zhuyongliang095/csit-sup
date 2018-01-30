@@ -34,21 +34,27 @@
 | ${vlan_trunk}  | ["1-10"] |
 | ${vlan_trunk_5} | 5 |
 | ${vlan_trunk_10} | 10 |
+| ${vlan_native} | 20 |
 
 | *** Test Cases *** |
 | TC01:DUT1 with Vlan Access translate-10-10 switch ICMPv4 between two TG links |
-|    | [Tags] | SUP BVT 3_NODE_SINGLE_LINK_TOPO |
+|    | [Tags] | SUP | BVT | 3_NODE_SINGLE_LINK_TOPO | HW_ENV |
 |    | Given Sup Configure path in 2-node circular topology | ${nodes['TG']} | ${nodes['DUT1']} | ${nodes['TG']} |
 |    | When Sup L2 Config Access | ${nodes['DUT1']} | ${dut_to_tg_if1_name} | ${vlan_access} |
 |    | And Sup L2 config Access | ${nodes['DUT1']} | ${dut_to_tg_if2_name} | ${vlan_access} |
 |    | Then Send ICMPv4 bidirectionally and verify received packets | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} |
 
 | TC02:DUT1 with Vlan Trunk translate-10-10 switch ICMPv4 between two TG links |
-|    | [Tags] | SUP BVT 3_NODE_SINGLE_LINK_TOPO |
+|    | [Tags] | SUP | BVT | 3_NODE_SINGLE_LINK_TOPO | HW_ENV |
 |    | Given Sup Configure path in 2-node circular topology | ${nodes['TG']} | ${nodes['DUT1']} | ${nodes['TG']} |
 |    | When Sup L2 Config trunk | ${nodes['DUT1']} | ${dut_to_tg_if1_name} | ${vlan_trunk} |
 |    | And Sup L2 config trunk | ${nodes['DUT1']} | ${dut_to_tg_if2_name} | ${vlan_trunk} |
-|    | Then Send ICMP packet and verify received packet | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} 
-|    | ... | encaps=Dot1q | vlan1=${vlan_trunk_5} | encaps_rx=Dot1q |
-|    | Then Send ICMP packet and verify received packet | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} 
-|    | ... | encaps=Dot1q | vlan1=${vlan_trunk_10} | encaps_rx=Dot1q |
+|    | Then Send ICMP packet and verify received packet | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} | encaps=Dot1q | vlan1=${vlan_trunk_5} | encaps_rx=Dot1q |
+|    | Then Send ICMP packet and verify received packet | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} | encaps=Dot1q | vlan1=${vlan_trunk_10} | encaps_rx=Dot1q |
+
+| TC03:DUT1 with Vlan native translate-10-10 switch ICMPv4 between two TG links |
+|    | [Tags] | SUP | BVT | 3_NODE_SINGLE_LINK_TOPO | HW_ENV | test |
+|    | Given Sup Configure path in 2-node circular topology | ${nodes['TG']} | ${nodes['DUT1']} | ${nodes['TG']} |
+|    | When Sup L2 Config native | ${nodes['DUT1']} | ${dut_to_tg_if1_name} | ${vlan_native} |
+|    | And Sup L2 config native | ${nodes['DUT1']} | ${dut_to_tg_if2_name} | ${vlan_native} |
+|    | Then Send ICMPv4 bidirectionally and verify received packets | ${tg_node} | ${tg_to_dut_if1} | ${tg_to_dut_if2} |

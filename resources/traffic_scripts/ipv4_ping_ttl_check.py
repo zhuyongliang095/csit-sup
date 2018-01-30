@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from scapy.all import Ether, IP, ICMP
+from scapy.all import Ether, IP, ICMP, ARP
 from resources.libraries.python.PacketVerifier \
     import Interface, create_gratuitous_arp_request, auto_pad, checksum_equal
 from resources.libraries.python.TrafficScriptArg import TrafficScriptArg
@@ -63,7 +63,15 @@ def main():
     if is_dst_tg:
         dst_if = Interface(dst_if_name)
         dst_if.send_pkt(str(create_gratuitous_arp_request(dst_mac, dst_ip)))
-
+## recive arp check   @zhuyl
+    pkt_resp_recv = src_if.recv_pkt()
+    if pkt_resp_recv.haslayer(ARP) :
+        print("src_if_name: {} \n recv arp: {}".format(src_if_name,pkt_resp_recv.show()))
+    if is_dst_tg :
+        pkt_req_recv=dst_if.recv_pkt()
+        if pkt_resp_recv.haslayer(ARP) :
+            print("dst_if_name: {} \nrecv arp: {}".format(dst_if_name,pkt_resp_recv.show()))
+##
     pkt_req_send = (Ether(src=src_mac, dst=first_hop_mac) /
                     IP(src=src_ip, dst=dst_ip) /
                     ICMP())

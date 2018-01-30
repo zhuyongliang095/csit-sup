@@ -932,3 +932,18 @@ class Topology(object):
             return iface_key
         except KeyError:
             return None
+
+    @staticmethod
+    def get_link_by_interface(node, iface_key):
+        """Get interface link by interface .
+    
+        :param node: Node to set numa_node on.
+        :param iface_key: Interface key from topology file.
+        :type node: dict
+        :type iface_key: str
+        :returns: Return link or None if not found.
+        """
+        try:
+            return node['interfaces'][iface_key].get('link')
+        except KeyError:
+            return None

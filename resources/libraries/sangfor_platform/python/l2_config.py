@@ -37,7 +37,8 @@ class l2_config(object):
         tmp.set_config_member('configStructName','vlan')
         tmp.set_config_member('interface_name',"{}".format(interface))
         tmp.set_config_member('access_vlanid',0)
-        #tmp.set_config_member('native_vlanid',0)
+        tmp.set_config_level_structName('interface')
+        tmp.set_config_level_member('ifname',"{}".format(interface))
         trunk_list=json.loads(trunk_list)
         MIN_VLAN_ID = 1
         MAX_VLAN_ID = 4094
@@ -84,19 +85,10 @@ class l2_config(object):
         tmp.set_oper(oper)
         tmp.set_config_member('configStructName','vlan')
         tmp.set_config_member('interface_name',"{}".format(interface))
-        tmp.set_config_member('native_vlanid',nativeid)
-        data=tmp.get_data()
-        msg=config_ipc.config_api(node,data)
-        
-    @staticmethod
-    def sup_l2_config_trunk_native(node,interface,nativeid):
-        oper='edit'
-        tmp=config_ipc_data()
-        tmp.set_oper(oper)
-        tmp.set_config_member('configStructName','vlan')
-        tmp.set_config_member('interface_name',"{}".format(interface))
-        tmp.set_config_member('vlan_bitmap',trunk_list)
-        tmp.set_config_member('native_vlanid',nativeid)
+        tmp.set_config_member('access_vlanid',0)
+        tmp.set_config_member('native_vlanid',int(nativeid))
+        tmp.set_config_level_structName('interface')
+        tmp.set_config_level_member('ifname',"{}".format(interface))
         data=tmp.get_data()
         msg=config_ipc.config_api(node,data)
         
@@ -109,30 +101,3 @@ class l2_config(object):
         data=tmp.get_data()
         return config_ipc.config_api(node,data)
         
-    @staticmethod
-    def sup_l2_config_access_show(node,):
-        oper='query'
-        tmp=config_ipc_data()
-        tmp.set_oper(oper)
-        tmp.set_config_member('configStructName','vlan_show')
-        data=tmp.get_data()
-        msg=l2_config.sup_l2_config_show(node,)
-        
-        
-    @staticmethod
-    def sup_l2_config_trunk_show(node,):
-        oper='query'
-        tmp=config_ipc_data()
-        tmp.set_oper(oper)
-        tmp.set_config_member('configStructName','vlan_show')
-        data=tmp.get_data()
-        msg=config_ipc.config_api(node,data)
-        
-    @staticmethod
-    def sup_l2_config_native_show(node,):
-        oper='query'
-        tmp=config_ipc_data()
-        tmp.set_oper(oper)
-        tmp.set_config_member('configStructName','vlan_show')
-        data=tmp.get_data()
-        msg=config_ipc.config_api(node,data)

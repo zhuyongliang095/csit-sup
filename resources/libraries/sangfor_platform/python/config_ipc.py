@@ -93,29 +93,31 @@ class config_ipc(object):
         
         
 class config_ipc_data(object):
-    data={"language":"en",
-        "version":1,
-        "operator":"query",
-        "config":{
-        "configStructName":"vlan_show",
+    
+    def __init__(self):
+        self._api_config_data={"language":"en",
+            "version":1,
+            "operator":"query",
+            "config":{
+            "configStructName":"vlan_show",
+            }
         }
-    }
     
     def set_oper(self,oper):
-        self.data['operator']=oper
+        self._api_config_data['operator']=oper
         
     def set_config_member(self,member,value):
-        self.data['config'][member]=value
+        self._api_config_data['config'][member]=value
         
     def set_config_level_structName(self,name):
-        self.data['config']['level']=[{}]
-        self.data['config']['level'][0]['configStructName']=name
+        self._api_config_data['config']['level']=[{}]
+        self._api_config_data['config']['level'][0]['configStructName']=name
     
     def set_config_level_member(self,member,value):
-        self.data['config']['level'][0][member]=value
+        self._api_config_data['config']['level'][0][member]=value
         
     def get_data(self):
-        return self.data
+        return self._api_config_data
     
 #import requests
 #class api_operating(object):
