@@ -26,7 +26,6 @@ class l2_config(object):
         tmp.set_config_level_structName('interface')
         tmp.set_config_level_member('ifname',"{}".format(interface))
         data=tmp.get_data()
-        logger.debug(data)
         msg=config_ipc.config_api(node,data)
         
     @staticmethod

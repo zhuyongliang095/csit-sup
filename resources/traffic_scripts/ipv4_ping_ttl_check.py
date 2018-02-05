@@ -65,17 +65,18 @@ def main():
         dst_if.send_pkt(str(create_gratuitous_arp_request(dst_mac, dst_ip)))
 ## recive arp check   @zhuyl
     pkt_resp_recv = src_if.recv_pkt()
-    if pkt_resp_recv.haslayer(ARP) :
-        print("src_if_name: {} \n recv arp: {}".format(src_if_name,pkt_resp_recv.show()))
-    if is_dst_tg :
-        pkt_req_recv=dst_if.recv_pkt()
+    if pkt_resp_recv not is None :
         if pkt_resp_recv.haslayer(ARP) :
-            print("dst_if_name: {} \nrecv arp: {}".format(dst_if_name,pkt_resp_recv.show()))
+            print("src_if_name: {} \n recv arp: {}".format(src_if_name,pkt_resp_recv.show()))
+        if is_dst_tg :
+            pkt_req_recv=dst_if.recv_pkt()
+            if pkt_resp_recv.haslayer(ARP) :
+                print("dst_if_name: {} \nrecv arp: {}".format(dst_if_name,pkt_resp_recv.show()))
 ##
-    pkt_req_send = (Ether(src=src_mac, dst=first_hop_mac) /
-                    IP(src=src_ip, dst=dst_ip) /
-                    ICMP())
-    src_if.send_pkt(pkt_req_send)
+        pkt_req_send = (Ether(src=src_mac, dst=first_hop_mac) /
+                        IP(src=src_ip, dst=dst_ip) /
+                        ICMP())
+        src_if.send_pkt(pkt_req_send)
 
     if is_dst_tg:
         pkt_req_recv = dst_if.recv_pkt()
