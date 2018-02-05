@@ -1,0 +1,4 @@
+1649c1649
+<             return self._cipher_info[name]['class'].new(key, self._cipher_info[name]['mode'], iv, counter)
+---
+>             return self._cipher_info[name]['class'].new(key, self._cipher_info[name]['mode'], '', counter)
