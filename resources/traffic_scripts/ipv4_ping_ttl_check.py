@@ -65,7 +65,7 @@ def main():
         dst_if.send_pkt(str(create_gratuitous_arp_request(dst_mac, dst_ip)))
 ## recive arp check   @zhuyl
     pkt_resp_recv = src_if.recv_pkt()
-    if pkt_resp_recv not is None :
+    if not isinstance(pkt_resp_recv, None) :
         if pkt_resp_recv.haslayer(ARP) :
             print("src_if_name: {} \n recv arp: {}".format(src_if_name,pkt_resp_recv.show()))
         if is_dst_tg :
